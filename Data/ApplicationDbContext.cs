@@ -1,0 +1,16 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using WebApiWithAuth.Models;
+
+namespace WebApiWithAuth.Data
+{
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        {
+        }
+
+        public DbSet<TaskerItem> TaskerItems { get; set; }
+    }
+}
