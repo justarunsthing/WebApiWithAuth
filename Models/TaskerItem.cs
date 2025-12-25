@@ -13,6 +13,6 @@ namespace WebApiWithAuth.Models
         public bool IsComplete { get; set; } = false;
 
         // Foreign key relationship
-        public virtual IdentityUser User { get; set; }
+        public virtual IdentityUser? User { get; set; }
     }
 }
