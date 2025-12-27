@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiWithAuth.Data;
@@ -15,10 +16,15 @@ namespace WebApiWithAuth.Controllers
     public class TaskerItemsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public TaskerItemsController(ApplicationDbContext context)
+        // Expression-bodied member
+        private string? UserId => _userManager.GetUserId(User);
+
+        public TaskerItemsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/TaskerItems
