@@ -110,10 +110,12 @@ namespace WebApiWithAuth.Controllers
         }
 
         // DELETE: api/TaskerItems/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTaskerItem(int id)
         {
-            var taskerItem = await _context.TaskerItems.FindAsync(id);
+            var taskerItem = await _context.TaskerItems.FirstOrDefaultAsync(t => t.Id == id && t.UserId == UserId);
+
             if (taskerItem == null)
             {
                 return NotFound();
