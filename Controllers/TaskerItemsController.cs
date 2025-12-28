@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiWithAuth.Data;
+using WebApiWithAuth.Extensions;
 using WebApiWithAuth.Models;
 
 namespace WebApiWithAuth.Controllers
@@ -31,9 +32,12 @@ namespace WebApiWithAuth.Controllers
         // GET: api/TaskerItems
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaskerItem>>> GetTaskerItems()
+        public async Task<ActionResult<IEnumerable<TaskerItemDto>>> GetTaskerItems()
         {
-            return await _context.TaskerItems.ToListAsync();
+            return await _context.TaskerItems
+                                 .Where(t => t.UserId == UserId)
+                                 .Select(t => t.ToDTO())
+                                 .ToListAsync();
         }
 
         // GET: api/TaskerItems/5
