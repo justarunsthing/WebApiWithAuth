@@ -57,30 +57,34 @@ namespace WebApiWithAuth.Controllers
 
         // PUT: api/TaskerItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTaskerItem(int id, TaskerItem taskerItem)
+        public async Task<IActionResult> PutTaskerItem(int id, TaskerItemDto taskerItemDto)
         {
-            if (id != taskerItem.Id)
+            if (id != taskerItemDto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(taskerItem).State = EntityState.Modified;
+            var taskerItem = await _context.TaskerItems.FirstOrDefaultAsync(t => t.Id == id && t.UserId == UserId);
+
+            if (taskerItem == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                taskerItem.Name = taskerItemDto.Name;
+                taskerItem.IsComplete = taskerItemDto.IsComplete;
+            }
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException) when (!TaskerItemExists(id))
             {
-                if (!TaskerItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
