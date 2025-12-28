@@ -92,9 +92,17 @@ namespace WebApiWithAuth.Controllers
 
         // POST: api/TaskerItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<TaskerItem>> PostTaskerItem(TaskerItem taskerItem)
+        public async Task<ActionResult<TaskerItem>> PostTaskerItem(TaskerItemDto taskerItemDto)
         {
+            var taskerItem = new TaskerItem
+            {
+                Name = taskerItemDto.Name,
+                IsComplete = taskerItemDto.IsComplete,
+                UserId = UserId
+            };
+
             _context.TaskerItems.Add(taskerItem);
             await _context.SaveChangesAsync();
 
