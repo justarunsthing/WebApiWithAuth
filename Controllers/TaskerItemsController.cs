@@ -41,17 +41,18 @@ namespace WebApiWithAuth.Controllers
         }
 
         // GET: api/TaskerItems/5
+        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<TaskerItem>> GetTaskerItem(int id)
+        public async Task<ActionResult<TaskerItemDto>> GetTaskerItem(int id)
         {
-            var taskerItem = await _context.TaskerItems.FindAsync(id);
+            var taskerItem = await _context.TaskerItems.FirstOrDefaultAsync(t => t.Id == id && t.UserId == UserId);
 
             if (taskerItem == null)
             {
                 return NotFound();
             }
 
-            return taskerItem;
+            return taskerItem.ToDTO();
         }
 
         // PUT: api/TaskerItems/5
