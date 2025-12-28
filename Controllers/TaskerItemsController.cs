@@ -127,6 +127,7 @@ namespace WebApiWithAuth.Controllers
             return NoContent();
         }
 
+        [Authorize]
         private bool TaskerItemExists(int id)
         {
             return _context.TaskerItems.Any(e => e.Id == id && e.UserId == UserId);
