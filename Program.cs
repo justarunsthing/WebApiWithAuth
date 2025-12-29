@@ -35,6 +35,9 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.Al
 
 var app = builder.Build();
 
+app.UseCors();
+app.MapIdentityApi<IdentityUser>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
